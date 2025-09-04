@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Aktivitas;
+use App\Models\Dosen;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -16,27 +18,24 @@ class AktivitasController extends Controller
      */
     public function index(): View
     {
-        //get all aktivitas
-        // $aktivitas = Aktivitas::with(['mahasiswaRel', 'pembimbing1Rel', 'pembimbing2Rel', 'penguji1Rel', 'penguji2Rel', 'penguji3Rel'])->paginate(10);
-        // dd($aktivitas[0]->mahasiswaRel->nim);
         $aktivitas = Aktivitas::paginate(10);
 
         //render view with aktivitas
         return view('aktivitas.index', compact('aktivitas'));
     }
 
-     /**
+    /**
      * create
      *
      * @return View
      */
     public function create(): View
     {
-        $mahasiswas = \App\Models\Mahasiswa::all();
-        $dosens = \App\Models\Dosen::all();
+        $mahasiswas = Mahasiswa::all();
+        $dosens = Dosen::all();
         return view('aktivitas.create', compact('mahasiswas', 'dosens'));
     }
-    
+
     /**
      * store
      *
@@ -49,16 +48,16 @@ class AktivitasController extends Controller
         $request->validate([
                 'judul'         => 'required|string|max:255',
                 'no_sk'         => 'required|string|max:20',
-                'tanggal_sk'   =>  'required|date',
+                'tanggal_sk'   => 'required|date',
                 'tanggal_mulai' => 'required|date',
                 'tanggal_akhir' => 'required|date',
                 'semester'      => 'required|string',
                 'mahasiswa'     => 'required|exists:mahasiswas,id',
                 'pembimbing1'   => 'required|exists:dosens,id|different:pembimbing2,penguji1,penguji2,penguji3',
                 'pembimbing2'   => 'required|exists:dosens,id|different:pembimbing1,penguji1,penguji2,penguji3',
-                'penguji1'     =>  'required|exists:dosens,id|different:pembimbing1,pembimbing2,penguji2,penguji3',
-                'penguji2'     =>  'required|exists:dosens,id|different:pembimbing1,pembimbing2,penguji1,penguji3',
-                'penguji3'     =>  'required|exists:dosens,id|different:pembimbing1,pembimbing2,penguji1,penguji2',
+                'penguji1'     => 'required|exists:dosens,id|different:pembimbing1,pembimbing2,penguji2,penguji3',
+                'penguji2'     => 'required|exists:dosens,id|different:pembimbing1,pembimbing2,penguji1,penguji3',
+                'penguji3'     => 'required|exists:dosens,id|different:pembimbing1,pembimbing2,penguji1,penguji2',
         ]);
 
         //create aktivitas
@@ -81,7 +80,7 @@ class AktivitasController extends Controller
         return redirect()->route('aktivitas.index')->with(['success' => 'Data Berhasil Disimpan!']);
     }
 
-      public function show(string $id): View
+    public function show(string $id): View
     {
         //get product by ID
         $aktivitas = Aktivitas::findOrFail($id);
