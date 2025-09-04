@@ -8,6 +8,7 @@ class Aktivitas extends Model
 {
     //
     protected $table = 'aktivitas';
+    protected $dates = ['tanggal_sk', 'tanggal_mulai', 'tanggal_akhir'];
     protected $fillable = [
         'judul',
         'no_sk',
@@ -26,23 +27,29 @@ class Aktivitas extends Model
         'penguji2',
         'penguji3'
     ];
-    function mahasiswaRel(){
+    function mahasiswaRel()
+    {
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa', 'id');
     }
 
-    function pembimbing1Rel(){
+    function pembimbing1Rel()
+    {
         return $this->belongsTo(Dosen::class, 'pembimbing1', 'id');
     }
-    function pembimbing2Rel(){
+    function pembimbing2Rel()
+    {
         return $this->belongsTo(Dosen::class, 'pembimbing2', 'id');
     }
-    function penguji1Rel(){
+    function penguji1Rel()
+    {
         return $this->belongsTo(Dosen::class, 'penguji1', 'id');
     }
-    function penguji2Rel(){
+    function penguji2Rel()
+    {
         return $this->belongsTo(Dosen::class, 'penguji2', 'id');
     }
-    function penguji3Rel(){
+    function penguji3Rel()
+    {
         return $this->belongsTo(Dosen::class, 'penguji3', 'id');
     }
 }

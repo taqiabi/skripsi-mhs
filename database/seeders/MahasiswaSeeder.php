@@ -13,7 +13,6 @@ class MahasiswaSeeder extends Seeder
      */
     public function run(): void
     {
-        //
         Mahasiswa::create([
             'nim' => '123456',
             'nama' => 'Abiyyu',

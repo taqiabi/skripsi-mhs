@@ -13,7 +13,6 @@ class AktivitasSeeder extends Seeder
      */
     public function run(): void
     {
-        //
         Aktivitas::create([
             'judul' => 'Sistem Informasi Akademik',
             'no_sk' => '123/ABC/2023',
