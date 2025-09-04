@@ -30,7 +30,8 @@ return new class extends Migration
             $table->unsignedBigInteger('penguji2');
             $table->unsignedBigInteger('penguji3');
             $table->timestamps();
-            
+    
+            //foreign keys
             $table->foreign('mahasiswa')->on('mahasiswas')->references('id');
             $table->foreign('pembimbing1')->on('dosens')->references('id');
             $table->foreign('pembimbing2')->on('dosens')->references('id');

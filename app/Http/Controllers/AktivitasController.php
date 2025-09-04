@@ -49,16 +49,16 @@ class AktivitasController extends Controller
         $request->validate([
                 'judul'         => 'required|string|max:255',
                 'no_sk'         => 'required|string|max:20',
-                'tanggal_sk'   => 'required|date',
+                'tanggal_sk'   =>  'required|date',
                 'tanggal_mulai' => 'required|date',
                 'tanggal_akhir' => 'required|date',
                 'semester'      => 'required|string',
                 'mahasiswa'     => 'required|exists:mahasiswas,id',
                 'pembimbing1'   => 'required|exists:dosens,id|different:pembimbing2,penguji1,penguji2,penguji3',
                 'pembimbing2'   => 'required|exists:dosens,id|different:pembimbing1,penguji1,penguji2,penguji3',
-                'penguji1'     => 'required|exists:dosens,id|different:pembimbing1,pembimbing2,penguji2,penguji3',
-                'penguji2'     => 'required|exists:dosens,id|different:pembimbing1,pembimbing2,penguji1,penguji3',
-                'penguji3'     => 'required|exists:dosens,id|different:pembimbing1,pembimbing2,penguji1,penguji2',
+                'penguji1'     =>  'required|exists:dosens,id|different:pembimbing1,pembimbing2,penguji2,penguji3',
+                'penguji2'     =>  'required|exists:dosens,id|different:pembimbing1,pembimbing2,penguji1,penguji3',
+                'penguji3'     =>  'required|exists:dosens,id|different:pembimbing1,pembimbing2,penguji1,penguji2',
         ]);
 
         //create aktivitas
@@ -88,5 +88,72 @@ class AktivitasController extends Controller
 
         //render view with product
         return view('aktivitas.show', compact('aktivitas'));
+    }
+
+    // other methods (edit, update, destroy) can be added here as needed
+
+    /**
+     * edit
+     *
+     * @param  mixed $id
+     * @return View
+     */
+    public function edit(string $id): View
+    {
+        //get product by ID
+        $aktivitas = Aktivitas::findOrFail($id);
+        $mahasiswas = \App\Models\Mahasiswa::all();
+        $dosens = \App\Models\Dosen::all();
+
+        //render view with product
+        return view('aktivitas.update', compact('aktivitas'), compact('mahasiswas', 'dosens'));
+    }
+        
+    /**
+     * update
+     *
+     * @param  mixed $request
+     * @param  mixed $id
+     * @return RedirectResponse
+     */
+    public function update(Request $request, $id): RedirectResponse
+    {
+        //validate form
+        $request->validate([
+            'judul'         => 'required|string|max:255',
+            'no_sk'         => 'required|',
+            'tanggal_sk'    => 'required|',
+            'tanggal_mulai' => 'required|',
+            'tanggal_akhir' => 'required|',
+            'semester'      => 'required|',
+            'mahasiswa'     => 'required|',
+            'pembimbing1'   => 'required|',
+            'pembimbing2'   => 'required|',
+            'penguji1'      => 'required|',
+            'penguji2'      => 'required|',
+            'penguji3'      => 'required|',
+        ]);
+
+        //get product by ID
+        $aktivitas = Aktivitas::findOrFail($id);
+
+            //update product without image
+            $aktivitas->update([
+                'judul'         => $request->judul,
+                'no_sk'         => $request->no_sk,
+                'tanggal_mulai' => $request->tanggal_mulai,
+                'tanggal_akhir' => $request->tanggal_akhir,
+                'semester'      => $request->semester,
+                'mahasiswa'     => $request->mahasiswa,
+                'pembimbing1'   => $request->pembimbing1,
+                'pembimbing2'   => $request->pembimbing2,
+                'penguji1'      => $request->penguji1,
+                'penguji2'      => $request->penguji2,
+                'penguji3'      => $request->penguji3,
+            ]);
+
+
+        //redirect to index
+        return redirect()->route('aktivitas.index')->with(['success' => 'Data Berhasil Diubah!']);
     }
 }
