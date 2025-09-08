@@ -18,9 +18,10 @@
                 <div class="card border-0 shadow-sm rounded">
                     <div class="card-body">
                         <form action="{{ route('aktivitas.update', $aktivitas->id) }}" method="POST" enctype="multipart/form-data">
-                        
+
                             @csrf
                             @method('PUT')
+
                             <div class="form-group mb-3">
                                 <label class="font-weight-bold">Judul</label>
                                 <input type="text" class="form-control @error('judul') is-invalid @enderror" name="judul" value="{{ old('judul', $aktivitas->judul) }}" placeholder="Masukkan Judul aktivitas">
@@ -35,7 +36,7 @@
 
                             <div class="form-group mb-3">
                                 <label class="font-weight-bold">No. SK</label>
-                                <textarea class="form-control @error('no_sk') is-invalid @enderror" name="no_sk" rows="1" placeholder="Masukkan no_sk">{{ old('no_sk', $aktivitas->no_sk) }}</textarea>
+                                <input type="text" class="form-control @error('no_sk') is-invalid @enderror" name="no_sk" value="{{ old('no_sk', $aktivitas->no_sk) }}" placeholder="Masukkan no_sk">
                             
                                 <!-- error message untuk no_sk -->
                                 @error('no_sk')
@@ -46,7 +47,6 @@
                             </div>
 
                             <div class="row">
-                                
                                     <div class="form-group mb-3">
                                         <label class="font-weight-bold">Tanggal SK</label>
                                         <input type="date" class="form-control @error('tanggal_sk') is-invalid @enderror" name="tanggal_sk" value="{{ old('tanggal_sk', $aktivitas->tanggal_sk) }}" placeholder="Masukkan Harga aktivitas">
@@ -74,6 +74,7 @@
                                         @enderror
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label class="font-weight-bold">Tanggal Akhir</label>
