@@ -21,7 +21,6 @@
                         
                             @csrf
                             @method('PUT')
-
                             <div class="form-group mb-3">
                                 <label class="font-weight-bold">Judul</label>
                                 <input type="text" class="form-control @error('judul') is-invalid @enderror" name="judul" value="{{ old('judul', $aktivitas->judul) }}" placeholder="Masukkan Judul aktivitas">
@@ -45,6 +44,21 @@
                                     </div>
                                 @enderror
                             </div>
+
+                            <div class="row">
+                                
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold">Tanggal SK</label>
+                                        <input type="date" class="form-control @error('tanggal_sk') is-invalid @enderror" name="tanggal_sk" value="{{ old('tanggal_sk', $aktivitas->tanggal_sk) }}" placeholder="Masukkan Harga aktivitas">
+                                    
+                                        <!-- error message untuk tanggal_sk -->
+                                        @error('tanggal_sk')
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -98,10 +112,14 @@
                             <div class="form-group mb-3">
                                 <label class="font-weight-bold">Semester</label>
                                 <select name="semester" id="semester" class="form-select" placeholder="Pilih Semester">
-                                            <option selected hidden>Pilih Semester </option>
-                                            <option value="20241">2024/2025 Ganjil</option>
-                                            <option value="20242">2024/2025 Genap</option>
-                                        </select>
+                                    <option hidden>Pilih Semester</option>
+                                        <option value="20241" {{ old('semester', $aktivitas->semester) == '20241' ? 'selected' : '' }}>
+                                            2024/2025 Ganjil
+                                        </option>
+                                        <option value="20242" {{ old('semester', $aktivitas->semester) == '20242' ? 'selected' : '' }}>
+                                            2024/2025 Genap
+                                        </option>
+                                    </select>
                                 {{-- <input type="text" class="form-control @error('semester') is-invalid @enderror" name="semester" value="{{ old('semester', $aktivitas->semester) }}" placeholder="Semester"> --}}
                             
                                 <!-- error message untuk semester -->

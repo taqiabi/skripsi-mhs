@@ -106,7 +106,8 @@ class AktivitasController extends Controller
         $dosens = \App\Models\Dosen::all();
 
         //render view with product
-        return view('aktivitas.update', compact('aktivitas'), compact('mahasiswas', 'dosens'));
+        return view('aktivitas.update', compact('aktivitas', 'mahasiswas', 'dosens'));
+        // return view('aktivitas.update', compact('aktivitas'), compact('mahasiswas', 'dosens'));
     }
         
     /**
@@ -127,11 +128,11 @@ class AktivitasController extends Controller
             'tanggal_akhir' => 'required|',
             'semester'      => 'required|',
             'mahasiswa'     => 'required|',
-            'pembimbing1'   => 'required|',
-            'pembimbing2'   => 'required|',
-            'penguji1'      => 'required|',
-            'penguji2'      => 'required|',
-            'penguji3'      => 'required|',
+            'pembimbing1'   => 'required|different:pembimbing2,penguji1,penguji2,penguji3',
+            'pembimbing2'   => 'required|different:pembimbing1,penguji1,penguji2,penguji3',
+            'penguji1'      => 'required|different:pembimbing1,pembimbing2,penguji2,penguji3',
+            'penguji2'      => 'required|different:pembimbing1,pembimbing2,penguji1,penguji3',
+            'penguji3'      => 'required|different:pembimbing1,pembimbing2,penguji1,penguji2',
         ]);
 
         //get product by ID
@@ -141,6 +142,7 @@ class AktivitasController extends Controller
             $aktivitas->update([
                 'judul'         => $request->judul,
                 'no_sk'         => $request->no_sk,
+                'tanggal_sk'    => $request->tanggal_sk,
                 'tanggal_mulai' => $request->tanggal_mulai,
                 'tanggal_akhir' => $request->tanggal_akhir,
                 'semester'      => $request->semester,
@@ -152,8 +154,28 @@ class AktivitasController extends Controller
                 'penguji3'      => $request->penguji3,
             ]);
 
-
+// dd($aktivitas->getChanges());
         //redirect to index
         return redirect()->route('aktivitas.index')->with(['success' => 'Data Berhasil Diubah!']);
+    }
+    /**
+     * destroy
+     *
+     * @param  mixed $id
+     * @return RedirectResponse
+     */
+
+    public function destroy($id): RedirectResponse
+    {
+        //get product by ID
+        $aktivitas = Aktivitas::findOrFail($id);
+
+     
+
+        //delete product
+        $aktivitas->delete();
+
+        //redirect to index
+        return redirect()->route('aktivitas.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
 }
